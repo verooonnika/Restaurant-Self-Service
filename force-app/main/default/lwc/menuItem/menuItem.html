@@ -1,0 +1,32 @@
+<template>
+    <lightning-card title={dish.Name}>
+       
+		<div class="slds-var-p-horizontal_small">
+			<div class="slds-media">
+				<div class="slds-media__body">
+                    <p class="slds-var-m-bottom_xx-small">{dish.Price__c}</p>
+                    <p class="slds-var-m-bottom_xx-small">{dish.Description__c}</p>
+				</div>
+			</div>
+		</div>
+	
+			<lightning-input type="number"
+			 variant="label-hidden" 
+			 label="Amount" 
+			 step="1" 
+			 min="1" 
+			 max="10" 
+			 value={amount} 
+			 onchange={handleAmountChange} 
+			 class="slds-float_left slds-input_counter">
+			</lightning-input>
+
+         <lightning-button
+                label="Add"
+                variant="brand"
+				onclick={handleOpenRecordClick}
+				class="slds-float_right">
+			</lightning-button>
+		
+	</lightning-card>
+</template>
