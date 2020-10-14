@@ -10,6 +10,9 @@ export default class CurrentOrder extends LightningElement {
     @track orderItems = [];
     @track totalCost = 0;
 
+    @track isModalOpen = false;
+
+
     order;
 
     @wire(MessageContext)
@@ -41,7 +44,7 @@ export default class CurrentOrder extends LightningElement {
      dispatchToast(error) {
         this.dispatchEvent(
             new ShowToastEvent({
-                title: 'Error loading contact',
+                title: 'Error loading',
                 message: reduceErrors(error).join(', '),
                 variant: 'error'
             })
@@ -51,15 +54,33 @@ export default class CurrentOrder extends LightningElement {
     handleMakeAnOrder() {
         
          let newOrder = { 'sobjectType': 'Customer_Order__c' };
-          newOrder.Comment__c = 'hi';
+         // newOrder.Comment__c = 'hi';
 
         createOrder({ order: newOrder, items: this.orderItems})
         .then((result) => {
-            console.debug('ok');
         })
         .catch((error) => {
             this.error = error;
-           console.debug(error);
         });
+    }
+
+    removeItem(event){
+      console.debug(event.detail.value);
+        for(var i = 0; i < this.orderItems.length; i++){
+            if(this.orderItems[i].Id === event.detail.value.Id){
+                this.orderItems.slice(i, 1);
+            }  
+        } 
+
+    }
+
+    openModal() {
+        this.isModalOpen = true;
+    }
+    closeModal() {
+        this.isModalOpen = false;
+    }
+    submitDetails() {
+        this.isModalOpen = false;
     }
 }

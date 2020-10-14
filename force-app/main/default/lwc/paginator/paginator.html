@@ -1,0 +1,18 @@
+<template>
+    <lightning-layout horizontal-align="center" class="slds-border_top">
+        <lightning-layout-item>
+            <lightning-button-icon icon-name="utility:left" variant="border-filled" onclick={handlePagePrevious}>
+            </lightning-button-icon>
+        </lightning-layout-item>
+        {page}
+        <lightning-layout-item>
+            <lightning-button-icon icon-name="utility:right" variant="border-filled" onclick={handlePageNext}>
+            </lightning-button-icon>
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <lightning-combobox name="itemsPerPage" label="Number of Items on Page" value={numberPerPage}
+                options={options} onchange={handleChangeNumberPerPage}>
+            </lightning-combobox>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>
