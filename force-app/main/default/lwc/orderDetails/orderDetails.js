@@ -2,7 +2,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class OrderDetails extends LightningElement {
 
-    @api orderItems;
+    @api orderItems = [];
     @api totalCost;
 
     get isPresentItems(){
@@ -10,11 +10,8 @@ export default class OrderDetails extends LightningElement {
     }
 
     removeItem(event){
-        for (var i = this.orderItems.length - 1; i >= 0; i--) {
-            if (this.orderItems[i].Dish__c === event.target.value) {
-             this.orderItems.splice(i, 1);
-            }
-           }
+        const removeItemEvent = new CustomEvent('removeitem', {detail: event.target.value});
+        this.dispatchEvent(removeItemEvent);
     }
 
     openOrderModal(){

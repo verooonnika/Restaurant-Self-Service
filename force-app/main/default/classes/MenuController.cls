@@ -29,8 +29,8 @@ public with sharing class MenuController {
         List<Customer_Order__c> orderItems = new List<Customer_Order__c>();
 
         for(Order_Item__c orderItem: items){
-            orderItem.Customer_Order__c = order.Id;
-        }
+        orderItem.Customer_Order__c = order.Id;
+        } 
 
         insert items; 
         

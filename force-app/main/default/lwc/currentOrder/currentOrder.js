@@ -3,7 +3,8 @@ import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService
 import ORDERMC from '@salesforce/messageChannel/OrderMessageChannel__c';
 export default class CurrentOrder extends LightningElement {
     
-    recordId;
+    @track recordId;
+
 
     @track order;
     @track orderItems = [];
@@ -29,9 +30,10 @@ export default class CurrentOrder extends LightningElement {
 
      handleMessage(message) {
         this.recordId = message.dish;
+
         var itemCost = message.amount * this.recordId.Price__c; ;
         let orderItem = { 'sobjectType': 'Order_Item__c'};
-        orderItem.Dish__c = this.recordId.Id; 
+        orderItem.Dish__c = this.recordId.Id; ////////////////////////////// 
         orderItem.Quantity__c = message.amount;
         orderItem.Total_Item_Cost__c = itemCost;
         this.orderItems.push(orderItem);
@@ -59,6 +61,16 @@ export default class CurrentOrder extends LightningElement {
         this.totalCost = 0.0;
         this.isMakeOrderModalOpen = false;
 
+    }
+
+    removeItem(event){
+        const dishId = event.detail;
+
+        for (var i = this.orderItems.length - 1; i >= 0; i--) {
+            if (this.orderItems[i].Dish__c === dishId) {
+             this.orderItems.splice(i, 1);
+            }
+           }
     }
 
     openModal() {

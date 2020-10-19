@@ -30,7 +30,6 @@ export default class MakeAnOrder extends LightningElement {
     handleMakeAnOrder() {
         
         let newOrder = { 'sobjectType': 'Customer_Order__c' };
-        // newOrder.Comment__c = '';
 
        createOrder({ order: newOrder, items: this.orderItems})
        .then((result) => {
