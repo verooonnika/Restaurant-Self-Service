@@ -1,27 +1,40 @@
 <template>
-	<lightning-card title={dish.Name}>
-
-		<div class="slds-var-p-horizontal_small">
-			<div class="slds-media">
-				<div class="slds-media__body">
-					<p>
-						<lightning-formatted-number value={dish.Price__c} format-style="currency" currency-code="USD">
-						</lightning-formatted-number>
-					</p>
-					<p class="slds-var-m-bottom_xx-small">{dish.Description__c}</p>
-				</div>
+	<lightning-card>
+		<h3 slot="title">
+			<!---->
+		</h3>
+		<div class="card">
+			<div class="slds-align_absolute-center slds-text-heading_small slds-p-bottom_medium">
+				{dish.Name}
+			</div>
+			<div class="slds-var-p-horizontal_small slds-p-bottom_medium slds-align_absolute-center">
+				{dish.Description__c}
 			</div>
 		</div>
 
-		<lightning-button label="Add" variant="brand" onclick={openModal} class="slds-float_right">
-		</lightning-button>
+		<div slot="footer">
+			<lightning-layout horizontal-align="spread">
+				<lightning-layout-item>
+					<div class="slds-p-top_xx-small slds-text-heading_small">
+						<lightning-formatted-number value={dish.Price__c} format-style="currency" currency-code="USD">
+						</lightning-formatted-number>
+					</div>
+				</lightning-layout-item>
+				<lightning-layout-item>
+					<lightning-button label="Add" variant="brand" onclick={openModal}>
+					</lightning-button>
+				</lightning-layout-item>
+			</lightning-layout>
 
+		</div>
 	</lightning-card>
+
+	<!--Add To Order Modal-->
 	<template if:true={isModalOpen}>
-		<!--  window -->
 		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
 			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
 			<div class="slds-modal__container">
+
 				<!-- header -->
 				<header class="slds-modal__header">
 					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
@@ -32,6 +45,7 @@
 					</button>
 					<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add To Order</h2>
 				</header>
+
 				<!-- body -->
 				<div class="slds-modal__content slds-p-around_large">
 					<lightning-formatted-text value={dish.Name} class="slds-text-heading_small">
@@ -46,8 +60,6 @@
 					</lightning-input>
 					<lightning-textarea label="Comment" placeholder="type here..." max-length="140">
 					</lightning-textarea>
-					<lightning-textarea label="Delivery Address" placeholder="type here..." max-length="140">
-					</lightning-textarea>
 				</div>
 
 				<!-- footer -->
@@ -58,16 +70,13 @@
 								Total: <lightning-formatted-number value={itemTotal} format-style="currency"
 									currency-code="USD"></lightning-formatted-number>
 							</div>
-
 						</lightning-layout-item>
 						<lightning-layout-item>
-
 							<lightning-button label="Add to Order" variant="brand" onclick={handleOpenRecordClick}
 								class="slds-float_right">
 							</lightning-button>
 						</lightning-layout-item>
 					</lightning-layout>
-
 				</footer>
 			</div>
 		</section>

@@ -1,22 +1,23 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
-import createOrder from '@salesforce/apex/MenuController.createOrder';
-
 import ORDERMC from '@salesforce/messageChannel/OrderMessageChannel__c';
 export default class CurrentOrder extends LightningElement {
-
+    
     recordId;
 
+    @track order;
     @track orderItems = [];
-    @track totalCost = 0;
+   // @api totalCost = 0;
 
     @track isModalOpen = false;
-
-
-    order;
+    @track isMakeOrderModalOpen = false;
 
     @wire(MessageContext)
     messageContext;
+
+    connectedCallback() {
+        this.subscribeToMessageChannel();
+    }
 
     subscribeToMessageChannel() {
         this.subscription = subscribe(
@@ -30,17 +31,12 @@ export default class CurrentOrder extends LightningElement {
         this.recordId = message.dish;
         var itemCost = message.amount * this.recordId.Price__c; ;
         let orderItem = { 'sobjectType': 'Order_Item__c'};
-        orderItem.Dish__c = this.recordId.Id;
+        orderItem.Dish__c = this.recordId.Id; 
         orderItem.Quantity__c = message.amount;
-        orderItem.Cost__c = itemCost;
-        this.totalCost += itemCost;
+        orderItem.Total_Item_Cost__c = itemCost;
         this.orderItems.push(orderItem);
     }
-
-     connectedCallback() {
-        this.subscribeToMessageChannel();
-    }
-
+  
      dispatchToast(error) {
         this.dispatchEvent(
             new ShowToastEvent({
@@ -50,37 +46,26 @@ export default class CurrentOrder extends LightningElement {
             })
         );
     }
-	
-    handleMakeAnOrder() {
-        
-         let newOrder = { 'sobjectType': 'Customer_Order__c' };
-         // newOrder.Comment__c = 'hi';
 
-        createOrder({ order: newOrder, items: this.orderItems})
-        .then((result) => {
-        })
-        .catch((error) => {
-            this.error = error;
+    get totalCost(){
+        var totalCost = 0;
+        this.orderItems.forEach(element => {
+            totalCost += element.Total_Item_Cost__c;
         });
-    }
-
-    removeItem(event){
-      console.debug(event.detail.value);
-        for(var i = 0; i < this.orderItems.length; i++){
-            if(this.orderItems[i].Id === event.detail.value.Id){
-                this.orderItems.slice(i, 1);
-            }  
-        } 
-
+        return totalCost;
     }
 
     openModal() {
         this.isModalOpen = true;
     }
+    openOrderModal() {
+        this.isMakeOrderModalOpen = true;
+    }
     closeModal() {
         this.isModalOpen = false;
     }
-    submitDetails() {
-        this.isModalOpen = false;
+    closeOrderModal() {
+        this.isMakeOrderModalOpen = false;
     }
+   
 }

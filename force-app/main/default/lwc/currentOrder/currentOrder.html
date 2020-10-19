@@ -1,66 +1,12 @@
 <template>
     <lightning-card title="Current Order" icon-name="utility:list">
         <div class="slds-p-around_large">
+
             <template if:true={isModalOpen}>
-                <!--  window -->
-                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
-                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-                    <div class="slds-modal__container">
-                        <!-- header -->
-                        <header class="slds-modal__header">
-                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                                title="Close" onclick={closeModal}>
-                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
-                                    size="small"></lightning-icon>
-                                <span class="slds-assistive-text">Close</span>
-                            </button>
-                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Order Details</h2>
-                        </header>
-                        <!-- body -->
-                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-
-                            <template for:each={orderItems} for:item="orderItem">
-                                <div key={orderItem.Id} class="slds-grid slds-gutters">
-                                    <div class="slds-col slds-size_1-of-4">
-                                        {orderItem.Dish__c}
-                                    </div>
-                                    <div class="slds-col slds-size_1-of-4">
-                                        x{orderItem.Quantity__c}
-                                    </div>
-                                    <div class="slds-col slds-size_1-of-4">
-                                        <lightning-formatted-number value={orderItem.Cost__c} format-style="currency"
-                                            currency-code="USD"></lightning-formatted-number>
-                                    </div>
-                                    <div class="slds-col slds-size_1-of-4">
-                                        <lightning-button-icon icon-name="utility:close" value={orderItem.Id}
-                                            variant="bare" onclick={removeItem} alternative-text="Remove" title="Remove"
-                                            class="slds-float_right"></lightning-button-icon>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                        <!-- footer -->
-                        <footer class="slds-modal__footer">
-
-                            <lightning-layout horizontal-align="spread">
-                                <lightning-layout-item>
-                                    <div class="slds-p-bottom_xxx-small slds-text-heading_small">
-                                        Total: <lightning-formatted-number value={totalCost} format-style="currency"
-                                            currency-code="USD"></lightning-formatted-number>
-                                    </div>
-                                </lightning-layout-item>
-                                <lightning-layout-item>
-                                    <lightning-button label="Make an order" variant="brand" onclick={handleMakeAnOrder}
-                                        class="slds-float_right">
-                                    </lightning-button>
-                                </lightning-layout-item>
-                            </lightning-layout>
-
-                        </footer>
-                    </div>
-                </section>
-                <div class="slds-backdrop slds-backdrop_open"></div>
+                <c-order-details order-items={orderItems} total-price={getTotalPrice} onclosemodal={closeModal}>
+                </c-order-details>
             </template>
+
             <div class="slds-border_bottom">
                 <lightning-button label="Order Details" variant="base" onclick={openModal}>
                 </lightning-button>
@@ -73,10 +19,16 @@
                     </div>
                 </lightning-layout-item>
                 <lightning-layout-item>
-                    <lightning-button label="Make an Order" variant="brand" onclick={handleMakeAnOrder}>
+                    <lightning-button label="Make an Order" variant="brand" onclick={openOrderModal}>
                     </lightning-button>
                 </lightning-layout-item>
             </lightning-layout>
+
+            <template if:true={isMakeOrderModalOpen}>
+                <c-make-an-order order-items={orderItems} total-price={getTotalPrice} onclosemodal={closeOrderModal}>
+                </c-make-an-order>
+            </template>
+
         </div>
     </lightning-card>
 </template>

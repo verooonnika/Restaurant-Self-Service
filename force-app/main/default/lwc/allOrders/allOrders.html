@@ -1,46 +1,103 @@
 <template>
-    <lightning-button variant="brand"
-       label="Orders"
-       title="Orders"
-       onclick={openModal}
-       class="slds-button_stretch"
-       style="width: 100%;">
-    </lightning-button> 
     <button class="slds-align_absolute-center slds-button slds-button_brand slds-button_stretch slds-container_fluid"
-    onclick={openModal}
-    >
-Orders History
-</button>
+        onclick={openModal}>
+        Orders History
+    </button>
+
     <template if:true={isModalOpen}>
-        <!--  window -->
-        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
+
                 <!-- header -->
                 <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
-                        <lightning-icon icon-name="utility:close"
-                            alternative-text="close"
-                            variant="inverse"
-                            size="small" ></lightning-icon>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
                         <span class="slds-assistive-text">Close</span>
                     </button>
                     <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Orders</h2>
                 </header>
+
                 <!-- body -->
                 <div class="slds-modal__content slds-p-around_large">
-                <template if:true={orders.data}>
-                        <template for:each={orders.data} for:item="order">
-                                <p key={order.Id}> {order.Name}</p>
-                </template>
-                </template>
+                    <lightning-layout horizontal-align="space" class="slds-border_bottom slds-p-bottom_large">
+                        <lightning-layout-item>
+                            <lightning-combobox name="Status" label="Status" placeholder="Select Status" value={status}
+                                options={statusOptions} onchange={handleStatusChange}>
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-combobox name="Date" label="Date" placeholder="Select Date" value={orderDate}
+                                options={dateOptions} onchange={handleDateChange}>
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-combobox name="Dish" label="Dish" placeholder="Select Dish" value={dishFilter}
+                                options={dishesOptions} onchange={handleDishChange}>
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <div class="slds-border_bottom">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-4">
+                                Id
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                Date
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                Status
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                Total Bill
+                            </div>
+                        </div>
+                    </div>
+
+                    <template if:true={orders}>
+                        <template for:each={filteredOrders} for:item="order">
+                            <div key={order.Id} class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-4">
+                                    {order.Name}
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <p>
+                                        <lightning-formatted-date-time value={order.Order_Date__c}>
+                                        </lightning-formatted-date-time>
+                                    </p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    {order.Status__c}
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <lightning-formatted-number value={order.Total_Bill__c} format-style="currency"
+                                        currency-code="USD"></lightning-formatted-number>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
                 </div>
+
                 <!-- footer -->
                 <footer class="slds-modal__footer">
-                    <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
-                    <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">OK</button>
+                    <lightning-layout horizontal-align="spread" class="slds-p-top_large">
+                        <lightning-layout-item>
+                            <div class="slds-p-bottom_xxx-small slds-text-heading_small">
+                                Total:
+                                <lightning-formatted-number value={totalCost} format-style="currency"
+                                    currency-code="USD"></lightning-formatted-number>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">OK</button>
+                        </lightning-layout-item>
+                    </lightning-layout>
                 </footer>
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
- </template>
+</template>

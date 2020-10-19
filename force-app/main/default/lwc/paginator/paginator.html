@@ -1,17 +1,27 @@
 <template>
-    <lightning-layout horizontal-align="center" class="slds-border_top">
-        <lightning-layout-item>
-            <lightning-button-icon icon-name="utility:left" variant="border-filled" onclick={handlePagePrevious}>
-            </lightning-button-icon>
-        </lightning-layout-item>
-        {page}
-        <lightning-layout-item>
-            <lightning-button-icon icon-name="utility:right" variant="border-filled" onclick={handlePageNext}>
-            </lightning-button-icon>
-        </lightning-layout-item>
-        <lightning-layout-item>
-            <lightning-combobox name="itemsPerPage" label="Number of Items on Page" value={numberPerPage}
-                options={options} onchange={handleChangeNumberPerPage}>
+    <lightning-layout horizontal-align="center" class="slds-p-top_large">
+
+        <div class="slds-align_absolute-center">
+            <lightning-layout-item padding="around-small">
+                <lightning-button-icon-stateful icon-name="utility:left" disabled={showPreviousButton}
+                    variant="border-filled" onclick={handlePagePrevious}>
+                </lightning-button-icon-stateful>
+            </lightning-layout-item>
+
+            <lightning-layout-item padding="around-small">
+                {page}
+            </lightning-layout-item>
+
+            <lightning-layout-item padding="around-small">
+                <lightning-button-icon-stateful icon-name="utility:right" disabled={showNextButton}
+                    variant="border-filled" onclick={handlePageNext}>
+                </lightning-button-icon-stateful>
+            </lightning-layout-item>
+        </div>
+        <lightning-layout-item padding="around-small">
+            <lightning-combobox name="itemsPerPage" label="Items on Page" value={numberPerPage}
+                placeholder={numberPerPage} options={options} onchange={handleChangeNumberPerPage}
+                class="slds-p-bottom_large" style="width: 45%;">
             </lightning-combobox>
         </lightning-layout-item>
     </lightning-layout>

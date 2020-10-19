@@ -8,35 +8,71 @@ import CATEGORY_FIELD from '@salesforce/schema/Dish__c.Category__c';
 import SUBCATEGORY_FIELD from '@salesforce/schema/Dish__c.SubCategory__c';
 export default class Menu extends LightningElement {
 
-	@track categoryOptions;
+	@track categoryOptions = [];
 	@track subCategoryOptions;
 
 	@track category = 'All';
 	@track subCategory = 'All';
 
-	@wire(getAllDishes, {category: '$category', subCategory: '$subCategory' }) dishes;
-	
-	@wire(getObjectInfo, {objectApiName: DISH_OBJECT })
-	dishInfo;
 
     @track page = 1;
     @track numberPerPage = 8;
-    @track pages = [];
-    set_size = 5;
+    @track pages;
+
+    @wire(getAllDishes, {category: '$category', subCategory: '$subCategory' }) dishes;
+	
+	@wire(getObjectInfo, {objectApiName: DISH_OBJECT })
+    dishInfo;
+    
+    @wire(getPicklistValues, {recordTypeId: '$dishInfo.data.defaultRecordTypeId', fieldApiName: SUBCATEGORY_FIELD })
+    subCategoryFieldInfo({ data, error }) {
+        if (data) this.subCategoryFieldData = data;
+    }
+
+    @wire(getPicklistValues, {recordTypeId:'$dishInfo.data.defaultRecordTypeId', fieldApiName: CATEGORY_FIELD })
+    categoryFieldInfo({ data, error }) {
+        
+        if (data) { /*
+            data.values.forEach(element => {
+                console.debug(element.label +  element.value);
+                this.categoryOptions.push({label: element.label, value: element.value});
+            });  */
+           
+           this.categoryOptions = data.values;
+        } 
+       
+    }
+
+    connectedCallback(){
+
+    }
 
 	get currentPageData(){
-		console.debug(this.pageData());
         return this.pageData();
 	}
 	
 	pageData = ()=>{
+        this.pages = this.dishes.data.length / this.numberPerPage;
         let page = this.page;
         let perpage = this.numberPerPage;
         let startIndex = (page*perpage) - perpage;
         let endIndex = (page*perpage);
         return this.dishes.data.slice(startIndex,endIndex);
 	 }
-	 
+	
+    handleCategoryChange(event) {
+        let key = this.subCategoryFieldData.controllerValues[event.target.value];
+		this.subCategoryOptions = this.subCategoryFieldData.values.filter(opt => opt.validFor.includes(key));
+		this.category = event.target.value;
+        this.subCategory = 'All';
+        this.page = 1;
+	}
+
+	handleSubCategoryChange(event) {
+        this.subCategory = event.target.value;
+        this.page = 1;
+    }
+    	 
 	previousHandler() {
         if (this.page > 1) {
             this.page = this.page - 1;
@@ -49,25 +85,6 @@ export default class Menu extends LightningElement {
 	
 	changeNumberHandler(event){
 		this.numberPerPage = event.detail;
-	}
-   
-    @wire(getPicklistValues, {recordTypeId: '$dishInfo.data.defaultRecordTypeId', fieldApiName: SUBCATEGORY_FIELD })
-    subCategoryFieldInfo({ data, error }) {
-        if (data) this.subCategoryFieldData = data;
-    }
-    @wire(getPicklistValues, {recordTypeId:'$dishInfo.data.defaultRecordTypeId', fieldApiName: CATEGORY_FIELD })
-    categoryFieldInfo({ data, error }) {
-        if (data) this.categoryOptions = data.values;
-	}
-	
-    handleCategoryChange(event) {
-        let key = this.subCategoryFieldData.controllerValues[event.target.value];
-		this.subCategoryOptions = this.subCategoryFieldData.values.filter(opt => opt.validFor.includes(key));
-		this.category = event.target.value;
-	}
-
-	handleSubCategoryChange(event) {
-		this.subCategory = event.target.value;
 	}
 
 }

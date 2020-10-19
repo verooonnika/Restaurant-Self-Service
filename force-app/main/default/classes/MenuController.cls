@@ -3,8 +3,6 @@ public with sharing class MenuController {
     @AuraEnabled(cacheable = true)
     public static Dish__c[] getAllDishes(String category, String subCategory){
 
-        System.debug(category + ' ' + subCategory);
-
         List<Dish__c> dishes = new List<Dish__c>();
 
         if(category == 'All'){
@@ -24,9 +22,11 @@ public with sharing class MenuController {
 
     @AuraEnabled
     public static void createOrder(Customer_Order__c order, List<Order_Item__c> items){
-        System.debug('Order: ' + order + ' Items: ' +  items);
         order.Status__c = 'Accepted';
+        order.Order_Date__c = System.today();
         insert order;
+
+        List<Customer_Order__c> orderItems = new List<Customer_Order__c>();
 
         for(Order_Item__c orderItem: items){
             orderItem.Customer_Order__c = order.Id;
@@ -37,10 +37,10 @@ public with sharing class MenuController {
     }
 
     @AuraEnabled(cacheable = true)
-    public static Customer_Order__c[] getOrdersByUser(){ // by id
-        Id currentUser = UserInfo.getUserId();
-        return [SELECT Id, Name FROM Customer_Order__c WHERE OwnerId =: currentUser ];
-        
+    public static Customer_Order__c[] getOrdersByUser(){
+
+        Id currentUser = UserInfo.getUserId();    
+        return [SELECT Id, Name, Order_Date__c, Status__c, (SELECT Dish__r.Name FROM Order_Items__r) FROM Customer_Order__c WHERE OwnerId =: currentUser ];       
     }
 
 }
