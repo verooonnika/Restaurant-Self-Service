@@ -1,6 +1,6 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { publish, MessageContext } from 'lightning/messageService';
-import ORDERMC from '@salesforce/messageChannel/OrderMessageChannel__c'; 
+import ORDERMC from '@salesforce/messageChannel/orderMessageChannel__c'; 
 export default class MenuItem extends LightningElement {
 
     @api dish;

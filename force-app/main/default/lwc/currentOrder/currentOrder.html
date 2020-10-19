@@ -19,7 +19,7 @@
                     </div>
                 </lightning-layout-item>
                 <lightning-layout-item>
-                    <lightning-button label="Make an Order" variant="brand" onclick={openOrderModal}>
+                    <lightning-button label="Make an Order" variant="brand" onclick={openOrderModal} disabled={isOrderEmpty}>
                     </lightning-button>
                 </lightning-layout-item>
             </lightning-layout>

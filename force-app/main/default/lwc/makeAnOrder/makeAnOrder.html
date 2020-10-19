@@ -22,7 +22,7 @@
                 </lightning-radio-group>
 
                 <template if:true={isDelivery}>
-                    <lightning-textarea label="Delivery Address" placeholder="type here..." max-length="140">
+                    <lightning-textarea label="Delivery Address" onchange={addressChange} placeholder="type here..." max-length="140" value={address}>
                     </lightning-textarea>
                 </template>
 

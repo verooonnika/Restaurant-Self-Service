@@ -40,7 +40,7 @@ public with sharing class MenuController {
     public static Customer_Order__c[] getOrdersByUser(){
 
         Id currentUser = UserInfo.getUserId();    
-        return [SELECT Id, Name, Order_Date__c, Status__c, (SELECT Dish__r.Name FROM Order_Items__r) FROM Customer_Order__c WHERE OwnerId =: currentUser ];       
+        return [SELECT Id, Name, Order_Date__c, Status__c, Total_Bill__c, (SELECT Dish__r.Name FROM Order_Items__r) FROM Customer_Order__c WHERE OwnerId =: currentUser ];       
     }
 
 }

@@ -5,6 +5,7 @@ import createOrder from "@salesforce/apex/MenuController.createOrder";
 export default class MakeAnOrder extends LightningElement {
 
     @track isDelivery;
+    @track address = '';
     @api orderItems;
     @api totalCost;
 
@@ -27,9 +28,14 @@ export default class MakeAnOrder extends LightningElement {
         }
     }
 
+    addressChange(event){
+        this.address = event.target.value;
+    }
+
     handleMakeAnOrder() {
         
         let newOrder = { 'sobjectType': 'Customer_Order__c' };
+        newOrder.Delivery_Adress__c = this.address;
 
        createOrder({ order: newOrder, items: this.orderItems})
        .then((result) => {

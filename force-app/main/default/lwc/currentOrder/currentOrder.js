@@ -1,6 +1,6 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
-import ORDERMC from '@salesforce/messageChannel/OrderMessageChannel__c';
+import ORDERMC from '@salesforce/messageChannel/orderMessageChannel__c';
 export default class CurrentOrder extends LightningElement {
     
     @track recordId;
@@ -20,6 +20,10 @@ export default class CurrentOrder extends LightningElement {
         this.subscribeToMessageChannel();
     }
 
+    get isOrderEmpty(){
+        return this.orderItems.length < 1;
+    }
+
     subscribeToMessageChannel() {
         this.subscription = subscribe(
             this.messageContext,
@@ -29,16 +33,34 @@ export default class CurrentOrder extends LightningElement {
     }
 
      handleMessage(message) {
+
         this.recordId = message.dish;
 
-        var itemCost = message.amount * this.recordId.Price__c; ;
-        let orderItem = { 'sobjectType': 'Order_Item__c'};
-        orderItem.Dish__c = this.recordId.Id; ////////////////////////////// 
-        orderItem.Quantity__c = message.amount;
-        orderItem.Total_Item_Cost__c = itemCost;
-        this.orderItems.push(orderItem);
+        var isItemExist = false;
+
+        if(this.orderItems.length > 0){
+            this.orderItems.forEach(orderItem => {
+                if(orderItem.Dish__c === this.recordId.Id){
+                    isItemExist = true;
+                    orderItem.Quantity__c += message.amount;
+                    orderItem.Total_Item_Cost__c = this.recordId.Price__c * orderItem.Quantity__c;
+                }
+                
+            });    
+        }
+
+        if(!isItemExist){
+            var itemCost = message.amount * this.recordId.Price__c; ;
+            let orderItem = { 'sobjectType': 'Order_Item__c'};
+            orderItem.Dish__c = this.recordId.Id; ////////////////////////////// 
+            orderItem.Quantity__c = message.amount;
+            orderItem.Total_Item_Cost__c = itemCost;
+            this.orderItems.push(orderItem);
+
+        }
         this.calculateTotalCost();
     }
+
   
      dispatchToast(error) {
         this.dispatchEvent(
@@ -51,6 +73,7 @@ export default class CurrentOrder extends LightningElement {
     }
 
     calculateTotalCost(){
+        this.totalCost = 0.0;
         this.orderItems.forEach(element => {
             this.totalCost += element.Total_Item_Cost__c;
         });
@@ -71,6 +94,7 @@ export default class CurrentOrder extends LightningElement {
              this.orderItems.splice(i, 1);
             }
            }
+           this.calculateTotalCost();
     }
 
     openModal() {

@@ -131,12 +131,10 @@ export default class ModalPopupLWC extends LightningElement {
 
     calculateTotalPrice(){
 
-        this.filteredOrders.forEach((order) => {
-            const orderItems = order.Order_Items__r;
+        this.totalPrice = 0.0;
 
-            orderItems.forEach((orderItem) => {
-                this.totalPrice += orderItem.Total_Item_Cost__c;
-            });
+        this.filteredOrders.forEach((order) => {
+            this.totalPrice += order.Total_Bill__c;
         });
 
     }

@@ -3,12 +3,12 @@
     <description>This is a sample Lightning Message Channel for the Lightning Web Components.</description>
     <isExposed>true</isExposed>
     <lightningMessageFields>
-        <description>This is the Menu Item</description>
-        <fieldName>dish</fieldName>
-    </lightningMessageFields>
-     <lightningMessageFields>
         <description>Amount</description>
         <fieldName>amount</fieldName>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <description>This is the Menu Item</description>
+        <fieldName>dish</fieldName>
     </lightningMessageFields>
     <masterLabel>OrderMessageChannel</masterLabel>
 </LightningMessageChannel>

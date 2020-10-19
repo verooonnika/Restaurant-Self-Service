@@ -5,8 +5,12 @@ export default class OrderDetails extends LightningElement {
     @api orderItems = [];
     @api totalCost;
 
-    get isPresentItems(){
+  /*  get isPresentItems(){
         return this.orderItems.length > 0;
+    } */
+
+    get isOrderEmpty(){
+        return this.orderItems.length < 1;
     }
 
     removeItem(event){

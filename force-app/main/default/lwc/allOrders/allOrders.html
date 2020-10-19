@@ -42,16 +42,13 @@
 
                     <div class="slds-border_bottom">
                         <div class="slds-grid slds-gutters">
-                            <div class="slds-col slds-size_1-of-4">
-                                Id
-                            </div>
-                            <div class="slds-col slds-size_1-of-4">
+                            <div class="slds-col slds-size_1-of-3">
                                 Date
                             </div>
-                            <div class="slds-col slds-size_1-of-4">
+                            <div class="slds-col slds-size_1-of-3">
                                 Status
                             </div>
-                            <div class="slds-col slds-size_1-of-4">
+                            <div class="slds-col slds-size_1-of-3">
                                 Total Bill
                             </div>
                         </div>
@@ -60,19 +57,16 @@
                     <template if:true={orders}>
                         <template for:each={filteredOrders} for:item="order">
                             <div key={order.Id} class="slds-grid slds-gutters">
-                                <div class="slds-col slds-size_1-of-4">
-                                    {order.Name}
-                                </div>
-                                <div class="slds-col slds-size_1-of-4">
+                                <div class="slds-col slds-size_1-of-3">
                                     <p>
                                         <lightning-formatted-date-time value={order.Order_Date__c}>
                                         </lightning-formatted-date-time>
                                     </p>
                                 </div>
-                                <div class="slds-col slds-size_1-of-4">
+                                <div class="slds-col slds-size_1-of-3">
                                     {order.Status__c}
                                 </div>
-                                <div class="slds-col slds-size_1-of-4">
+                                <div class="slds-col slds-size_1-of-3">
                                     <lightning-formatted-number value={order.Total_Bill__c} format-style="currency"
                                         currency-code="USD"></lightning-formatted-number>
                                 </div>
@@ -87,12 +81,12 @@
                         <lightning-layout-item>
                             <div class="slds-p-bottom_xxx-small slds-text-heading_small">
                                 Total:
-                                <lightning-formatted-number value={totalCost} format-style="currency"
+                                <lightning-formatted-number value={totalPrice} format-style="currency"
                                     currency-code="USD"></lightning-formatted-number>
                             </div>
                         </lightning-layout-item>
                         <lightning-layout-item>
-                            <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">OK</button>
+                            <button class="slds-button slds-button_brand" onclick={closeModal} title="OK">OK</button>
                         </lightning-layout-item>
                     </lightning-layout>
                 </footer>
