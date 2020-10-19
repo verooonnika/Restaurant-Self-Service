@@ -7,7 +7,7 @@ export default class CurrentOrder extends LightningElement {
 
     @track order;
     @track orderItems = [];
-   // @api totalCost = 0;
+    @api totalCost = 0.0;
 
     @track isModalOpen = false;
     @track isMakeOrderModalOpen = false;
@@ -35,6 +35,7 @@ export default class CurrentOrder extends LightningElement {
         orderItem.Quantity__c = message.amount;
         orderItem.Total_Item_Cost__c = itemCost;
         this.orderItems.push(orderItem);
+        this.calculateTotalCost();
     }
   
      dispatchToast(error) {
@@ -47,12 +48,17 @@ export default class CurrentOrder extends LightningElement {
         );
     }
 
-    get totalCost(){
-        var totalCost = 0;
+    calculateTotalCost(){
         this.orderItems.forEach(element => {
-            totalCost += element.Total_Item_Cost__c;
+            this.totalCost += element.Total_Item_Cost__c;
         });
-        return totalCost;
+    }
+
+    clearCurrentOrder(){
+        this.orderItems = [];
+        this.totalCost = 0.0;
+        this.isMakeOrderModalOpen = false;
+
     }
 
     openModal() {

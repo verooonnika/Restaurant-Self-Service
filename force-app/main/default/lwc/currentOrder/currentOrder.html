@@ -3,7 +3,7 @@
         <div class="slds-p-around_large">
 
             <template if:true={isModalOpen}>
-                <c-order-details order-items={orderItems} total-price={getTotalPrice} onclosemodal={closeModal}>
+                <c-order-details order-items={orderItems} total-cost={totalCost} onopenordermodal={openOrderModal} onclosemodal={closeModal}>
                 </c-order-details>
             </template>
 
@@ -25,7 +25,7 @@
             </lightning-layout>
 
             <template if:true={isMakeOrderModalOpen}>
-                <c-make-an-order order-items={orderItems} total-price={getTotalPrice} onclosemodal={closeOrderModal}>
+                <c-make-an-order order-items={orderItems} total-cost={totalCost} onclosemodal={closeOrderModal} onordercreated={clearCurrentOrder}>
                 </c-make-an-order>
             </template>
 

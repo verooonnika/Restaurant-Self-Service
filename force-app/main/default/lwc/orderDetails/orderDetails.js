@@ -17,8 +17,14 @@ export default class OrderDetails extends LightningElement {
            }
     }
 
+    openOrderModal(){
+        this.closeModal();
+        const orderEvent = new CustomEvent('openordermodal', {detail: false});
+        this.dispatchEvent(orderEvent);
+    }
+
     closeModal() {
-        const selectedEvent = new CustomEvent('closemodal', {detail: false});
-        this.dispatchEvent(selectedEvent);
+        const closeEvent = new CustomEvent('closemodal', {detail: false});
+        this.dispatchEvent(closeEvent);
     }
 }

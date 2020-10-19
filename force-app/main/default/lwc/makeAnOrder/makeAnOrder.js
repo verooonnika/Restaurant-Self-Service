@@ -1,10 +1,12 @@
 import { LightningElement, track, api } from 'lwc';
+import createOrder from "@salesforce/apex/MenuController.createOrder";
+
 
 export default class MakeAnOrder extends LightningElement {
 
     @track isDelivery;
     @api orderItems;
-    @api totalPrice;
+    @api totalCost;
 
     get orderTypeOptions() {
         return [
@@ -32,14 +34,16 @@ export default class MakeAnOrder extends LightningElement {
 
        createOrder({ order: newOrder, items: this.orderItems})
        .then((result) => {
+        const orderCreatedEvent = new CustomEvent('ordercreated', {detail: false});
+        this.dispatchEvent(orderCreatedEvent);
        })
        .catch((error) => {
            this.error = error;
        });
    }
 
-   closeModal() {
-    const selectedEvent = new CustomEvent('closemodal', {detail: false});
-    this.dispatchEvent(selectedEvent);
+   closeOrderModal() {
+    const closeEvent = new CustomEvent('closemodal', {detail: false});
+    this.dispatchEvent(closeEvent);
 }
 }

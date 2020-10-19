@@ -14,7 +14,7 @@ export default class ModalPopupLWC extends LightningElement {
     @track dateOptions=[]; 
     @track dishesOptions = [];
    
-    @track totalOrdersCost = 0;
+    @track totalPrice = 0.0;
 
     @track status;
     @track orderDate;
@@ -44,7 +44,7 @@ export default class ModalPopupLWC extends LightningElement {
         this.filteredOrders = result;
         this.getDateOptions(result);
         this.getDishOptions(result);
-       // this.calculateTotalPrice();
+        this.calculateTotalPrice();
         })
         .catch(error => {
         this.error = error;
@@ -80,19 +80,19 @@ export default class ModalPopupLWC extends LightningElement {
     handleStatusChange(event) {
         this.status = event.detail.value;
         this.filterOrders();
-       // this.calculateTotalPrice();
+        this.calculateTotalPrice();
     }
 
     handleDateChange(event) {
         this.orderDate = event.detail.value;
         this.filterOrders();
-      //  this.calculateTotalPrice();
+        this.calculateTotalPrice();
     }
 
     handleDishChange(event) {
         this.orderDish = event.detail.value;
         this.filterOrders();
-      //  this.calculateTotalPrice();
+        this.calculateTotalPrice();
     }   
 
     getDateOptions(result){
@@ -127,6 +127,18 @@ export default class ModalPopupLWC extends LightningElement {
                 value: dishName
             })
         });
+    }
+
+    calculateTotalPrice(){
+
+        this.filteredOrders.forEach((order) => {
+            const orderItems = order.Order_Items__r;
+
+            orderItems.forEach((orderItem) => {
+                this.totalPrice += orderItem.Total_Item_Cost__c;
+            });
+        });
+
     }
 
     openModal() {
