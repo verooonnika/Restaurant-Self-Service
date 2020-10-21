@@ -8,7 +8,7 @@ import CATEGORY_FIELD from '@salesforce/schema/Dish__c.Category__c';
 import SUBCATEGORY_FIELD from '@salesforce/schema/Dish__c.SubCategory__c';
 export default class Menu extends LightningElement {
 
-	@track categoryOptions = [];
+	@track categoryOptions;
 	@track subCategoryOptions;
 
 	@track category = 'All';
@@ -32,13 +32,10 @@ export default class Menu extends LightningElement {
     @wire(getPicklistValues, {recordTypeId:'$dishInfo.data.defaultRecordTypeId', fieldApiName: CATEGORY_FIELD })
     categoryFieldInfo({ data, error }) {
         
-        if (data) { /*
-            data.values.forEach(element => {
-                console.debug(element.label +  element.value);
-                this.categoryOptions.push({label: element.label, value: element.value});
-            });  */
+        if (data) { 
+           this.categoryOptions = [...data.values];
+           this.categoryOptions.push({label: 'All', value: 'All'});
            
-           this.categoryOptions = data.values;
         } 
        
     }
@@ -62,7 +59,9 @@ export default class Menu extends LightningElement {
 	
     handleCategoryChange(event) {
         let key = this.subCategoryFieldData.controllerValues[event.target.value];
-		this.subCategoryOptions = this.subCategoryFieldData.values.filter(opt => opt.validFor.includes(key));
+
+        this.subCategoryOptions = [...this.subCategoryFieldData.values.filter(opt => opt.validFor.includes(key))];
+        this.subCategoryOptions.push({label: 'All', value: 'All'});
 		this.category = event.target.value;
         this.subCategory = 'All';
         this.page = 1;

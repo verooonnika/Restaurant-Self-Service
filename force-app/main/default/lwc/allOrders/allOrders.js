@@ -27,7 +27,11 @@ export default class ModalPopupLWC extends LightningElement {
     
     @wire(getPicklistValues, {recordTypeId: '$orderInfo.data.defaultRecordTypeId', fieldApiName: STATUS_FIELD })
     statusFieldInfo({ data, error }) {
-        if (data) this.statusOptions = data.values;
+        
+        if (data){
+            this.statusOptions = [...data.values];
+            this.statusOptions.push({label: 'All', value: 'All'});
+        }
     }
 
     connectedCallback() {
@@ -97,7 +101,7 @@ export default class ModalPopupLWC extends LightningElement {
     }   
 
     getDateOptions(result){
-        this.dateOptions = [{label:'--All--', value:'All'}];
+        this.dateOptions = [{label:'All', value:'All'}];
         const setOfDate = new Set();
         result.forEach(element => {
             let date = element.Order_Date__c;
@@ -110,7 +114,7 @@ export default class ModalPopupLWC extends LightningElement {
     }
 
     getDishOptions(result){
-        this.dishesOptions = [{label:'--All--', value:'All'}];
+        this.dishesOptions = [{label:'All', value:'All'}];
         const setOfDishes = new Set();
         result.forEach((order) => {
             const orderItems = order.Order_Items__r;

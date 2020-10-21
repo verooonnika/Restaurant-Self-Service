@@ -5,12 +5,12 @@
 			<!-- Filters-->
 			<lightning-layout horizontal-align="space" class="slds-border_bottom slds-p-bottom_large">
 				<lightning-layout-item>
-					<lightning-combobox name="Category" label="Category" placeholder="--All--" value={category}
+					<lightning-combobox name="Category" label="Category" value={category}
 						options={categoryOptions} onchange={handleCategoryChange}>
 					</lightning-combobox>
 				</lightning-layout-item>
 				<lightning-layout-item>
-					<lightning-combobox name="SubCategory" label="SubCategory" placeholder="--All--"
+					<lightning-combobox name="SubCategory" label="SubCategory"
 						value={subCategory} options={subCategoryOptions} onchange={handleSubCategoryChange}>
 					</lightning-combobox>
 				</lightning-layout-item>
