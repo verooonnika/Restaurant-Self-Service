@@ -3,7 +3,7 @@
         <div class="slds-p-around_large">
 
             <template if:true={isModalOpen}>
-                <c-order-details order-items={orderItems} total-cost={totalCost} onopenordermodal={openOrderModal} onclosemodal={closeModal} onremoveitem={removeItem}>
+                <c-order-details order-items={orderItems} view-order-items={viewOrderItems} total-cost={totalCost} onopenordermodal={openOrderModal} onclosemodal={closeModal} onremoveitem={removeItem}>
                 </c-order-details>
             </template>
 

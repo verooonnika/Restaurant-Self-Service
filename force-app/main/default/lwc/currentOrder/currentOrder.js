@@ -9,6 +9,7 @@ export default class CurrentOrder extends LightningElement {
     @track order;
     @track orderItems = [];
     @api totalCost = 0.0;
+    viewOrderItems = [];
 
     @track isModalOpen = false;
     @track isMakeOrderModalOpen = false;
@@ -35,6 +36,7 @@ export default class CurrentOrder extends LightningElement {
      handleMessage(message) {
 
         this.recordId = message.dish;
+        console.debug(message.dish);
 
         var isItemExist = false;
 
@@ -55,6 +57,14 @@ export default class CurrentOrder extends LightningElement {
             orderItem.Dish__c = this.recordId.Id; ////////////////////////////// 
             orderItem.Quantity__c = message.amount;
             orderItem.Total_Item_Cost__c = itemCost;
+
+            let item  = {};
+            item.Name = message.dish.Name;
+            item.Quantity = message.amount;
+            item.Cost = itemCost;
+            item.Dish__c = this.recordId.Id;
+            this.viewOrderItems.push(item);
+
             this.orderItems.push(orderItem);
 
         }
@@ -92,6 +102,12 @@ export default class CurrentOrder extends LightningElement {
         for (var i = this.orderItems.length - 1; i >= 0; i--) {
             if (this.orderItems[i].Dish__c === dishId) {
              this.orderItems.splice(i, 1);
+            }
+           }
+
+        for (var i = this.viewOrderItems.length - 1; i >= 0; i--) {
+            if (this.viewOrderItems[i].Dish__c === dishId) {
+             this.viewOrderItems.splice(i, 1);
             }
            }
            this.calculateTotalCost();

@@ -4,6 +4,7 @@ export default class OrderDetails extends LightningElement {
 
     @api orderItems = [];
     @api totalCost;
+    @api viewOrderItems;
 
   /*  get isPresentItems(){
         return this.orderItems.length > 0;
@@ -14,8 +15,10 @@ export default class OrderDetails extends LightningElement {
     }
 
     removeItem(event){
+        console.debug(this.orderItems);
         const removeItemEvent = new CustomEvent('removeitem', {detail: event.target.value});
         this.dispatchEvent(removeItemEvent);
+
     }
 
     openOrderModal(){
@@ -28,4 +31,5 @@ export default class OrderDetails extends LightningElement {
         const closeEvent = new CustomEvent('closemodal', {detail: false});
         this.dispatchEvent(closeEvent);
     }
+
 }

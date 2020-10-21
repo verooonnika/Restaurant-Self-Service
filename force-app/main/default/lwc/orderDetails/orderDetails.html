@@ -32,16 +32,16 @@
                 </div>
 
                 <template if:false={isOrderEmpty}>
-                    <template for:each={orderItems} for:item="orderItem">
+                    <template for:each={viewOrderItems} for:item="orderItem">
                         <div key={orderItem.Id} class="slds-grid slds-gutters">
                             <div class="slds-col slds-size_1-of-4">
-                                {orderItem.Dish__c}
+                                {orderItem.Name}
                             </div>
                             <div class="slds-col slds-size_1-of-4">
-                                x{orderItem.Quantity__c}
+                                x{orderItem.Quantity}
                             </div>
                             <div class="slds-col slds-size_1-of-4">
-                                <lightning-formatted-number value={orderItem.Total_Item_Cost__c} format-style="currency"
+                                <lightning-formatted-number value={orderItem.Cost} format-style="currency"
                                     currency-code="USD"></lightning-formatted-number>
                             </div>
                             <div class="slds-col slds-size_1-of-4">
