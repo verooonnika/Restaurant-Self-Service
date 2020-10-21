@@ -54,7 +54,7 @@
                         </div>
                     </div>
 
-                    <template if:true={orders}>
+                    <template if:true={filteredOrders}>
                         <template for:each={filteredOrders} for:item="order">
                             <div key={order.Id} class="slds-grid slds-gutters">
                                 <div class="slds-col slds-size_1-of-3">
@@ -73,6 +73,11 @@
                             </div>
                         </template>
                     </template>
+                    <template if:true={isOrdersEmpty}>
+                        <div class="slds-p-top_large slds-p-bottom_large slds-align_absolute-center"> 
+                            No orders </div>
+                    </template>
+
                 </div>
 
                 <!-- footer -->

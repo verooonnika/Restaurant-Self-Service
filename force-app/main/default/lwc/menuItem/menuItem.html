@@ -34,7 +34,6 @@
 		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
 			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
 			<div class="slds-modal__container">
-
 				<!-- header -->
 				<header class="slds-modal__header">
 					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
@@ -56,7 +55,7 @@
 					</p>
 					<p>{dish.Description__c}</p>
 					<lightning-input type="number" label="Amount" step="1" min="1" max="10" value={amount}
-						onchange={handleAmountChange}>
+						onchange={handleAmountChange} required="true">
 					</lightning-input>
 					<lightning-textarea label="Comment" placeholder="type here..." max-length="140">
 					</lightning-textarea>
@@ -72,7 +71,7 @@
 							</div>
 						</lightning-layout-item>
 						<lightning-layout-item>
-							<lightning-button label="Add to Order" variant="brand" onclick={handleOpenRecordClick}
+							<lightning-button label="Add to Order" variant="brand" onclick={handleAddItemClick}>
 								class="slds-float_right">
 							</lightning-button>
 						</lightning-layout-item>

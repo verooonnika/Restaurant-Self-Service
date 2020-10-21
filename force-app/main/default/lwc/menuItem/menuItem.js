@@ -15,13 +15,16 @@ export default class MenuItem extends LightningElement {
         return this.amount * this.dish.Price__c;
     }
 
-    handleOpenRecordClick() {
-        const message = {
-            dish: this.dish,
-            amount: this.amount
-        };
-        publish(this.messageContext, ORDERMC, message);
-        this.closeModal();
+
+    handleAddItemClick() {
+        if(this.amount > 0 && this.amount <= 11){
+            const message = {
+                dish: this.dish,
+                amount: this.amount
+            };
+            publish(this.messageContext, ORDERMC, message);
+            this.closeModal();
+        }
     }
 
     handleAmountChange(event) {
@@ -33,6 +36,7 @@ export default class MenuItem extends LightningElement {
     }
     closeModal() {
         this.isModalOpen = false;
+        this.amount = 1;
     }
 
 }

@@ -8,7 +8,7 @@ import {getPicklistValues} from 'lightning/uiObjectInfoApi';
 export default class ModalPopupLWC extends LightningElement {
 
     @track orders = [];
-    @track filteredOrders = [];
+    @track filteredOrders;
 
     @track statusOptions = []; 
     @track dateOptions=[]; 
@@ -16,9 +16,9 @@ export default class ModalPopupLWC extends LightningElement {
    
     @track totalPrice = 0.0;
 
-    @track status;
-    @track orderDate;
-    @track orderDish;
+     status = 'All';
+     orderDate = 'All';
+     orderDish = 'All';
 
     @track isModalOpen = false;
 
@@ -31,10 +31,7 @@ export default class ModalPopupLWC extends LightningElement {
     }
 
     connectedCallback() {
-        this.getOrders();
-        this.status = 'All';
-        this.orderDate = 'All';
-        this.orderDish = 'All';        
+        this.getOrders();      
     }
 
     getOrders() {
@@ -49,6 +46,10 @@ export default class ModalPopupLWC extends LightningElement {
         .catch(error => {
         this.error = error;
         })
+    }
+
+    get isOrdersEmpty(){
+        return this.filteredOrders.length < 1;
     }
 
     filterOrders() {
@@ -142,8 +143,14 @@ export default class ModalPopupLWC extends LightningElement {
     openModal() {
         this.isModalOpen = true;
     }
+    
     closeModal() {
         this.isModalOpen = false;
+        this.getOrders();
+        this.status = 'All';
+        this.orderDate = 'All';
+        this.orderDish = 'All'; 
+        
     }
 
 }

@@ -36,7 +36,7 @@ public with sharing class MenuController {
         
     }
 
-    @AuraEnabled(cacheable = true)
+    @AuraEnabled
     public static Customer_Order__c[] getOrdersByUser(){
 
         Id currentUser = UserInfo.getUserId();    
